@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Access | LAMBER SMS</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .container {
+      background: #172238;
+      padding: 32px;
+      border-radius: 16px;
+      width: min(360px, 85%);
+    }
+    h1 { color: #38bdf8; text-align: center; }
+    p { color: #cbd5e1; text-align: center; }
+    input, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: 0;
+    }
+    input { background: #f1f5f9; }
+    button {
+      background: #0284c7;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #0369a1; }
+    #message { margin-top: 16px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LAMBER SMS</h1>
+    <p>Create an account or sign in</p>
+
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="signup">Create Account</button>
+    <button id="login">Sign In</button>
+
+    <p id="message"></p>
+  </div>
+
+  <script type="module">
+    import { createClient } from
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "YOUR_PROJECT_URL";
+    const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const message = document.getElementById("message");
+
+    document.getElementById("signup").onclick = async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || password.length < 8) {
+        message.textContent = "Enter a valid email and a password of at least 8 characters.";
+        return;
+      }
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password
+      });
+
+      message.textContent = error
+        ? error.message
+        : "Registration received. Check your email for a confirmation link.";
+    };
+
+    document.getElementById("login").onclick = async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      message.textContent = error
+        ? error.message
+        : "You are signed in successfully!";
+    };
+  </script>
+</body>
+</html>
