@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAMBER SMS | Dashboard</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#f8fafc}
+.sidebar{position:fixed;left:0;top:0;width:235px;height:100vh;background:#111c30;padding:25px 18px}
+.brand{font-size:23px;font-weight:bold;color:#38bdf8;margin-bottom:40px}
+.nav a{display:block;color:#cbd5e1;text-decoration:none;padding:14px;border-radius:8px;margin:6px 0}
+.nav a.active,.nav a:hover{background:#1e3a5f;color:white}
+.main{margin-left:235px;padding:35px;max-width:1250px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+h1{margin:0;font-size:28px}
+.muted{color:#94a3b8}
+button{background:#0284c7;color:white;border:0;padding:11px 16px;border-radius:8px;cursor:pointer}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:30px}
+.card{background:#17243a;padding:23px;border:1px solid #263750;border-radius:13px}
+.card h3{font-size:14px;color:#94a3b8;font-weight:normal}
+.value{font-size:25px;font-weight:bold;margin-top:15px}
+.section{margin-top:35px}
+.section-box{background:#17243a;padding:23px;border-radius:13px;border:1px solid #263750}
+.status{color:#fbbf24;font-size:13px}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+td,th{text-align:left;padding:13px;border-bottom:1px solid #334155}
+th{color:#94a3b8;font-size:13px}
+.notice{background:#102c42;padding:15px;border-radius:9px;color:#bae6fd;margin-top:22px}
+@media(max-width:700px){
+.sidebar{position:relative;width:100%;height:auto;padding:15px}
+.brand{margin-bottom:12px}
+.nav{display:flex;overflow-x:auto}
+.nav a{white-space:nowrap;padding:10px}
+.main{margin-left:0;padding:20px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+<div class="brand">LAMBER SMS</div>
+<nav class="nav">
+<a class="active" href="#overview">Overview</a>
+<a href="#services">SMS Services</a>
+<a href="#requests">OTP Requests</a>
+<a href="#api">API Integration</a>
+<a href="#settings">Account Settings</a>
+</nav>
+</aside>
+
+<main class="main">
+<div class="top">
+<div>
+<h1>Dashboard</h1>
+<p class="muted">Welcome to your LAMBER SMS workspace.</p>
+</div>
+<button id="logout">Sign Out</button>
+</div>
+
+<section id="overview" class="cards">
+<div class="card">
+<h3>Account Status</h3>
+<div class="value">Active</div>
+</div>
+<div class="card">
+<h3>SMS Sent</h3>
+<div class="value">0</div>
+</div>
+<div class="card">
+<h3>OTP Requests</h3>
+<div class="value">0</div>
+</div>
+<div class="card">
+<h3>Available Balance</h3>
+<div class="value">₦0.00</div>
+</div>
+</section>
+
+<section id="services" class="section">
+<div class="section-box">
+<h2>SMS Services</h2>
+<p class="muted">Business messaging and customer verification services.</p>
+<p class="status">Coming soon — SMS delivery is not connected yet.</p>
+</div>
+</section>
+
+<section id="requests" class="section">
+<div class="section-box">
+<h2>OTP Requests</h2>
+<p class="muted">Your verification activity will appear here when the service is implemented.</p>
+<table>
+<tr><th>Reference</th><th>Service</th><th>Status</th></tr>
+<tr><td colspan="3">No OTP activity yet.</td></tr>
+</table>
+</div>
+</section>
+
+<section id="api" class="section">
+<div class="section-box">
+<h2>API Integration</h2>
+<p class="muted">Connect your business application to LAMBER SMS.</p>
+<p class="status">Coming soon — API access is not active yet.</p>
+</div>
+</section>
+
+<section id="settings" class="section">
+<div class="section-box">
+<h2>Account Settings</h2>
+<p class="muted" id="userEmail">Loading account information...</p>
+</div>
+</section>
+
+<div class="notice">
+Welcome to LAMBER SMS. This is your customer dashboard preview. SMS sending, payments and API services will be connected in later development stages.
+</div>
+</main>
+
+<script type="module">
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const SUPABASE_URL = "https://djlbujscmudkuzytsakf.supabase.c";
+const SUPABASE_KEY = "sb_publishable_0idrMIT8Y6qgwdlNqvCvJA_AutGcGA-";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const {data,error} = await supabase.auth.getUser();
+
+if(error || !data.user){
+  window.location.href = "auth.html";
+} else {
+  document.getElementById("userEmail").textContent =
+    "Signed in as: " + data.user.email;
+}
+
+document.getElementById("logout").onclick = async () => {
+  await supabase.auth.signOut();
+  window.location.href = "auth.html";
+};
+</script>
+
+</body>
+</html>
