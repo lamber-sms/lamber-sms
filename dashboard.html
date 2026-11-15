@@ -127,12 +127,14 @@ const SUPABASE_KEY = "sb_publishable_0idrMIT8Y6qgwdlNqvCvJA_AutGcGA-";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const {data,error} = await supabase.auth.getUser();
+const { data: { session }, error } =
+  await supabase.auth.getSession();
 
-if(error || !data.user){
+if (error || !session) {
   window.location.href = "auth.html";
 } else {
   document.getElementById("userEmail").textContent =
-    "Signed in as: " + data.user.email;
+    "Signed in as: " + session.user.email;
 }
 
 document.getElementById("logout").onclick = async () => {
