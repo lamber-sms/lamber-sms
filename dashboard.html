@@ -115,6 +115,25 @@ th{color:#94a3b8;font-size:13px}
 <div class="notice">
 Welcome to LAMBER SMS. This is your customer dashboard preview. SMS sending, payments and API services will be connected in later development stages.
 </div>
+<section id="organization-setup" style="padding:25px; margin:20px; background:#f4f7fb; border-radius:12px;">
+  <h2>Organization Setup</h2>
+  <p>Create your organization to start setting up business messaging.</p>
+
+  <input
+    type="text"
+    id="organizationName"
+    placeholder="Enter organization name"
+    style="padding:12px; width:100%; max-width:350px;"
+  >
+
+  <br><br>
+
+  <button id="createOrganization">
+    Create Organization
+  </button>
+
+  <p id="organizationMessage"></p>
+</section>
 </main>
 
 <script type="module">
@@ -177,24 +196,6 @@ document.getElementById("logout").onclick = async () => {
   });
 });
 </script>
-<section id="organization-setup" style="padding:25px; margin:20px; background:#f4f7fb; border-radius:12px;">
-  <h2>Organization Setup</h2>
-  <p>Create your organization to start setting up business messaging.</p>
 
-  <input
-    type="text"
-    id="organizationName"
-    placeholder="Enter organization name"
-    style="padding:12px; width:100%; max-width:350px;"
-  >
-
-  <br><br>
-
-  <button id="createOrganization">
-    Create Organization
-  </button>
-
-  <p id="organizationMessage"></p>
-</section>
 </body>
 </html>
