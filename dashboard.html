@@ -138,7 +138,13 @@ if (error || !session) {
 }
 
 document.getElementById("logout").onclick = async () => {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    alert("Sign out failed: " + error.message);
+    return;
+  }
+
   window.location.href = "auth.html";
 };
   document.addEventListener("DOMContentLoaded", () => {
