@@ -156,6 +156,33 @@ if (error || !session) {
     "Signed in as: " + session.user.email;
 }
 
+  if (session) {
+  const { data: membership, error: membershipError } = await supabase
+    .from("organization_members")
+    .select("organization_id")
+    .eq("user_id", session.user.id)
+    .limit(1)
+    .maybeSingle();
+
+  const message = document.getElementById("organizationMessage");
+
+  if (membershipError) {
+    message.textContent = "Could not load organization.";
+  } else if (membership) {
+    const { data: organization, error: organizationError } = await supabase
+      .from("organizations")
+      .select("name")
+      .eq("id", membership.organization_id)
+      .maybeSingle();
+
+    if (organizationError) {
+      message.textContent = "Could not load organization name.";
+    } else if (organization) {
+      message.textContent = "Your organization: " + organization.name;
+    }
+  }
+}
+
 document.getElementById("logout").onclick = async () => {
   const { error } = await supabase.auth.signOut();
 
