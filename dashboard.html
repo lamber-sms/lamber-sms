@@ -152,11 +152,15 @@ const { data: { session }, error } =
 if (error || !session) {
   window.location.href = "auth.html";
 } else {
+  const { data: { session }, error } =
+  await supabase.auth.getSession();
+
+if (error || !session) {
+  window.location.href = "auth.html";
+} else {
   document.getElementById("userEmail").textContent =
     "Signed in as: " + session.user.email;
-}
 
-  if (session) {
   const { data: membership, error: membershipError } = await supabase
     .from("organization_members")
     .select("organization_id")
@@ -180,6 +184,8 @@ if (error || !session) {
     } else if (organization) {
       message.textContent = "Your organization: " + organization.name;
     }
+  } else {
+    message.textContent = "No organization membership found.";
   }
 }
 
